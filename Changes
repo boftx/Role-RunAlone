@@ -1,0 +1,7 @@
+Revision history for Role-RunAlone
+
+Version     Timestamp
+v0.0.0_01   2020-09-04 21:22:00 PDT
+            Brought in MooX::Role::RunAlone v0.0.0_04 as starting point
+            Extended tests with Local::TrapExit.
+

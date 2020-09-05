@@ -1,0 +1,14 @@
+Changes
+lib/Role/RunAlone.pm
+Makefile.PL
+MANIFEST			This list of files
+README
+t/00-load.t
+t/01-basic.t
+t/02-tags.t
+t/03-deferred_mode_runalone_lock.t
+xt/boilerplate.t
+xt/manifest.t
+xt/pod-coverage.t
+xt/pod.t
+xt/spelling.t
