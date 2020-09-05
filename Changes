@@ -1,6 +1,10 @@
 Revision history for Role-RunAlone
 
 Version     Timestamp
+v0.0.0_02   2020-09-05 14:42:00 PDT
+            Changes to tests for earlier versions of Perl.
+            Modified POD to better apply to new name.
+
 v0.0.0_01   2020-09-04 21:22:00 PDT
             Brought in MooX::Role::RunAlone v0.0.0_04 as starting point
             Extended tests with Local::TrapExit.

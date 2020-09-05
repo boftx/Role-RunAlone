@@ -16,6 +16,7 @@ add_stopwords(
       Mattijsen
       cronjobs
       noexit
+      modulino
       init
       negatable
       perldoc

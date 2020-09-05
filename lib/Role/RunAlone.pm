@@ -1,18 +1,15 @@
 package Role::RunAlone;
 
-use Data::Dumper;
-$Data::Dumper::Indent = 1;
-
 use 5.006;
 use strict;
 use warnings;
+
+our $VERSION = 'v0.0.0_02';
 
 use Fcntl qw( :flock );
 use Carp qw( croak );
 
 use Role::Tiny;
-
-our $VERSION = 'v0.0.0_01';
 
 my %default_lock_args = (
     noexit   => 0,
@@ -128,10 +125,18 @@ Role::RunAlone - prevent multiple instances of a script from running
 
 =head1 VERSION
 
-Version v0.0.0_01
+Version v0.0.0_02
 
 =head1 SYNOPSIS
   
+There are B<many> diffrent ways that a script might be crafted to compose
+this role. The following is just the obvious ways that the author has
+thought of. The examples below are limited to help prevent boredom.
+
+=over 4
+
+=back
+
  # normal mode
  package My::Script;
   
@@ -171,10 +176,11 @@ Version v0.0.0_01
 
 =head1 DESCRIPTION
 
-This Role provides a simple way for a command line script that uses C<Moo>
-to ensure that only a single instance of said script is able to run at
-one time. This is accomplished by trying to obtain an exclusive lock on the
-script's C<__DATA__> or C<__END__> section.
+This Role provides a simple way for a command line script written as a
+modulino, especially one that uses C<Moo> or something similar, to ensure
+that only a single instance of said script is able to run at one time. This
+is accomplished by trying to obtain an exclusive lock on the script's
+C<__DATA__> or C<__END__> section.
 
 The Role will send a message to C<STDERR> indicating a fatal error and then
 call C<exit(2)> if neither of those tags are present. This behavior can not
@@ -393,6 +399,6 @@ This is free software, licensed under:
 
 =head1 DISCLAIMER OF WARRANTIES
 
-THIS PACKAGE IS PROVIDED "AS IS" AND WITHOUT ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+THIS PACKAGE IS PROVIDED "AS IS" AND WITHOUT ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
 
 =cut

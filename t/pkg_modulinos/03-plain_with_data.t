@@ -15,7 +15,7 @@ use FindBin;
 use lib $FindBin::Bin . '/..';
 use Local::TrapExit;
 
-use Test::More;    # tests => 2;
+use Test::More tests => 6;
 
 my $run_entered;
 my $stderr = '';

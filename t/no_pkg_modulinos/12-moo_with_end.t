@@ -14,7 +14,7 @@ use FindBin;
 use lib $FindBin::Bin . '/..';
 use Local::TrapExit;
 
-use Test::More;    # tests => 2;
+use Test::More tests => 6;
 
 my $run_entered;
 my $stderr = '';
@@ -46,6 +46,7 @@ END {
     my $tag_info = __PACKAGE__->_runalone_tag_pkg;
     is( $tag_info->{package}, __PACKAGE__, 'tag was found in ' . __PACKAGE__ );
     ok( $run_entered, 'script executed' );
+
     done_testing();
 }
 

@@ -15,7 +15,7 @@ use FindBin;
 use lib $FindBin::Bin . '/..';
 use Local::TrapExit;
 
-use Test::More;    # tests => 2;
+use Test::More tests => 5;
 
 my $run_entered;
 my $stderr = '';
@@ -39,8 +39,13 @@ END {
     ok( 1, 'in the END block' );
     is( Local::TrapExit::exit_code(), 2, 'exit code 2 indicates missing tag' );
     like( $stderr, qr/FATAL: No/, 'missing tag error was on STDERR' );
-    ok( !__PACKAGE__->DOES('Role::RunAlone'), 'role was not composed' );
-    ok( !$run_entered,                        'script did not execute' );
+    ok( !$run_entered, 'script did not execute' );
+
+  SKIP: {
+        skip qq/"DOES" is not native to Perl version $]/, 1 if $] < 5.010001;
+        ok( !__PACKAGE__->DOES('Role::RunAlone'), 'role was not composed' );
+    }
+
     done_testing();
 }
 
