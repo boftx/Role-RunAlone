@@ -1,6 +1,10 @@
 Revision history for Role-RunAlone
 
 Version     Timestamp
+v0.0.0_03   2020-09-05 23:09:00 PDT
+            Fixed spelling errors and fine tuned xt/spelling.t
+            Improved SYNOPSIS section.
+
 v0.0.0_02   2020-09-05 14:42:00 PDT
             Changes to tests for earlier versions of Perl.
             Modified POD to better apply to new name.

@@ -10,21 +10,22 @@ unless ( $ENV{RELEASE_TESTING} ) {
     plan( skip_all => "Author tests not required for installation" );
 }
 
-use Test::Pod::Spelling;
+eval "use Test::Pod::Spelling;";
+plan skip_all => "Test::Pod::Spelling required for testing POD spelling"
+  if $@;
+
 add_stopwords(
     qw(
       Mattijsen
-      cronjobs
+      Tilly
       noexit
       modulino
-      init
-      negatable
       perldoc
       AnnoCPAN
       CPAN
-      licensable
       sym
       Symlinks
+      cron
       )
 );
 

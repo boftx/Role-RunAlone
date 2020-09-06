@@ -4,7 +4,7 @@ use 5.006;
 use strict;
 use warnings;
 
-our $VERSION = 'v0.0.0_02';
+our $VERSION = 'v0.0.0_03';
 
 use Fcntl qw( :flock );
 use Carp qw( croak );
@@ -29,9 +29,9 @@ my $caller_cnt = 0;
 
     if ( tell( *{$data_pkg} ) == -1 ) {
 
-        # if we reach this then the __END__ tag does not exist. swap in the
-        # calling script namespace to see if the __DATA__ tag exists. is
-        # there an easier way to find the last element in the caller stack?
+        # if we reach this then the __END__ tag does not exist, and the 
+        # __DATA__ tag is not in the "main" namespace. swap in the
+        # calling script namespace to see if the __DATA__ tag is in there.
         while ( ++$caller_cnt ) {
             my @call_info = caller($caller_cnt);
             last if !@call_info;
@@ -125,7 +125,7 @@ Role::RunAlone - prevent multiple instances of a script from running
 
 =head1 VERSION
 
-Version v0.0.0_02
+Version v0.0.0_03
 
 =head1 SYNOPSIS
   
@@ -134,10 +134,24 @@ this role. The following is just the obvious ways that the author has
 thought of. The examples below are limited to help prevent boredom.
 
 =over 4
-
-=back
-
- # normal mode
+  
+=item normal mode, regular script
+  
+ #!/usr/bin/perl
+  
+ use strict;
+ use warnings;
+  
+ use Role::Tiny::With;
+ with 'Role::RunAlone';
+  
+ ...
+  
+ __END__ # or __DATA__
+  
+=item normal mode, modulino
+  
+ #!/usr/bin/perl
  package My::Script;
   
  use strict;
@@ -150,35 +164,62 @@ thought of. The examples below are limited to help prevent boredom.
   
  __END__ # or __DATA__
   
-
- # deferred mode
+=item deferred mode, regular script
+  
+ #!/usr/bin/perl
  package My::DeferredScript;
+  
+ use strict;
+ use warnings;
   
  BEGIN {
     $ENV{RUNALONE_DEFER_LOCK} = 1;
  }
   
- use strict;
- use warnings;
-  
- use Moo;
+ use Role::Tiny::With;
  with 'Role::RunAlone';
   
  ...
-
- # exit immediately if we are not alone
+  
+ # exit if we are not alone
  __PACKAGE__->runalone_lock;
   
  # do work
  ...
   
  __END__ # or __DATA__
+  
+=item deferred mode, modulino
+  
+ #!/usr/bin/perl
+ package My::DeferredScript;
+  
+ use strict;
+ use warnings;
+  
+ BEGIN {
+    $ENV{RUNALONE_DEFER_LOCK} = 1;
+ }
+  
+ use Moo;
+ with 'Role::RunAlone';
+  
+ ...
+  
+ # exit if we are not alone
+ __PACKAGE__->runalone_lock;
+  
+ # do work
+ ...
+  
+ __END__ # or __DATA__
+  
+=back
 
 =head1 DESCRIPTION
 
-This Role provides a simple way for a command line script written as a
-modulino, especially one that uses C<Moo> or something similar, to ensure
-that only a single instance of said script is able to run at one time. This
+This Role provides a simple way for a command line script to ensure that
+only a single instance of said script is able to run at one time. This
 is accomplished by trying to obtain an exclusive lock on the script's
 C<__DATA__> or C<__END__> section.
 
@@ -279,16 +320,16 @@ offending caller might be more easily identified.
 
 =item noexit (Boolean, default: 0)
 
-Controls whether the method will call C<exit( 1 )> or return a Boolean
-C<false> upon failure. Setting it C<true> allows the composing script
-to take additional/different actions.
+If C<false>, the method will call C<exit(1)> if the call to C<flock> fails.
+Setting it C<true> will cause the method to return the result of the call
+to C<flock>.
 
 Note: if set, it will also suppress the fatal error message associated
 with failure to obtain a lock.
 
 =item attempts (Integer, must satisfy 0 < N < 10; default: 1)
 
-Set how many attempts will be made to get a lock on the handle in question.
+Sets how many attempts will be made to get a lock on the handle in question.
 
 =item interval (Integer, must satisfy 0 < N < 10, default: 1)
 
@@ -297,10 +338,10 @@ Sets how long to C<sleep> between attempts if C<attempts> is greater than one.
 =item verbose (Boolean, default: 0)
 
 Enables progress messages on STDERR if set. The following messages
-can appear:
+can appear: ("pkg" will be replaced by the namespace the tag is in.)
   
- "Attempting to lock <data pkg> ... Failed, retrying <N> more time(s)"
- "Attempting to lock <data pkg> ... SUCCESS"
+ "Attempting to lock pkg::DATA ... Failed, retrying <N> more time(s)"
+ "Attempting to lock pkg::DATA ... SUCCESS"
   
 =back
 
@@ -334,17 +375,17 @@ lose its lock on the file. causing any subsequent run of the same script
 to be successful, therefore causing two instances of the same script to run
 at the same time (which is what you wanted to prevent by using Sys::RunAlone
 in the first place). Therefore, make sure that no instances of the script are
-running (and won't be started by cronjobs while making changes) if you really
+running (and won't be started by cron jobs while making changes) if you really
 want to be 100% sure that only one instance of the script is running at the
 same time.
 
 =head1 ACKNOWLEDGMENTS
 
 This Role relies upon a principle that was first proposed (so far as this
-author knows) by Randal L. Schwartz (L<MERLYN>), and first implemented by
-Elizabeth Mattijsen (L<ELIZABETH>) in L<Sys::RunAlone>. That module has
-been extended by L<PERLANCAR> in L<Sys::RunAlone::Flexible> with suggestions
-by this author.
+author knows) by Randal L. Schwartz C<MERLYN>, and first implemented by
+Elizabeth Mattijsen C<ELIZABETH> in L<Sys::RunAlone> (currently maintained
+by Ben Tilly C<TILLY>.) That module has been extended by C<PERLANCAR> in
+L<Sys::RunAlone::Flexible> with suggestions by this author.
 
 =head1 SEE ALSO
 
