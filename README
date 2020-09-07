@@ -1,16 +1,19 @@
 Role-RunAlone
 
-This Role provides a simple way for a command line script that uses C<Moo>
-to ensure that only a single instance of said script is able to run at
-one time. This is accomplished by trying to obtain an exlusive lock on the
-sctript's C<__DATA__> or C<__END__> section.
+This Role provides a simple way for a command line script to ensure that
+only a single instance of said script is able to run at one time. This is
+accomplished by trying to obtain an exlusive lock on the sctript's __DATA__
+or __END__ section.
 
 The Role will call C<exit(2)> if neither of those tags are present.
 This behavior can not be disabled and occurs when the Role is composed.
 
 If one of the aforementioned tags are present, a failure to obtain an
 exclusive lock indicates that another instance of the composing script
-is already executing and the Role will call C<exit(1)>.
+is already executing and the Role will call C<exit(1)>. This behavior
+can be modified if desired by means of an environment variable.
+
+Please see the main documentation for a full description.
 
 INSTALLATION
 

@@ -27,7 +27,6 @@ my %WriteMakefileArgs = (
         'Carp'             => '0',
     },
     PREREQ_PM => {
-        'Moo'        => '0',
         'Role::Tiny' => '0',
         'Fcntl'      => '0',
         'Carp'       => '0',

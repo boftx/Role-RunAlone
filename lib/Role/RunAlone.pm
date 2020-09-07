@@ -4,7 +4,7 @@ use 5.006;
 use strict;
 use warnings;
 
-our $VERSION = 'v0.0.0_03';
+our $VERSION = 'v0.0.0_04';
 
 use Fcntl qw( :flock );
 use Carp qw( croak );
@@ -125,13 +125,13 @@ Role::RunAlone - prevent multiple instances of a script from running
 
 =head1 VERSION
 
-Version v0.0.0_03
+Version v0.0.0_04
 
 =head1 SYNOPSIS
   
 There are B<many> diffrent ways that a script might be crafted to compose
-this role. The following is just the obvious ways that the author has
-thought of. The examples below are limited to help prevent boredom.
+this role. The following is just some of the obvious ways that the author
+has thought of. The examples below are limited to help prevent boredom.
 
 =over 4
   
@@ -167,7 +167,6 @@ thought of. The examples below are limited to help prevent boredom.
 =item deferred mode, regular script
   
  #!/usr/bin/perl
- package My::DeferredScript;
   
  use strict;
  use warnings;
@@ -226,6 +225,10 @@ C<__DATA__> or C<__END__> section.
 The Role will send a message to C<STDERR> indicating a fatal error and then
 call C<exit(2)> if neither of those tags are present. This behavior can not
 be disabled and occurs when the Role is composed.
+
+NOTE: The principle employed DOES NOT work if the script in question is
+being run on multiple machines. The locking mechanism only works when
+multiple instances are to be prevented on a single machine.
 
 =head2 Normal Locking
 
@@ -360,15 +363,23 @@ namespace collision.
 
 =head1 CAVEATS
 
-[NB: This section has been copied from C<Sys::RunAlone>]
+=head2 Multiple Machines
+
+The principle employed B<DOES NOT> work if the script in question is
+being run on multiple machines. The locking mechanism only works when
+multiple instances are to be prevented on a single machine.
 
 =head2 Symlinks
+
+[NB: This section has been copied from C<Sys::RunAlone>]
 
 Execution of scripts that are (sym)linked to another script, will all be seen
 as execution of the same script, even though the error message will only show
 the specified script name.  This could be considered a bug or a feature.
 
 =head2 Changing a Running Script
+
+[NB: This section has been copied from C<Sys::RunAlone>]
 
 If you change the script while it is running, the script will effectively
 lose its lock on the file. causing any subsequent run of the same script
