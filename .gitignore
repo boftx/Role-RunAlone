@@ -14,5 +14,5 @@ inc/
 nytprof.out
 pod2htm*.tmp
 pm_to_blib
-MooX-Role-RunAlone-*
-MooX-Role-RunAlone-*.tar.gz
+Role-RunAlone-*
+Role-RunAlone-*.tar.gz
