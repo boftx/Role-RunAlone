@@ -4,7 +4,7 @@ use 5.006;
 use strict;
 use warnings;
 
-our $VERSION = 'v0.0.0_04';
+our $VERSION = 'v0.1.0';
 
 use Fcntl qw( :flock );
 use Carp qw( croak );
@@ -125,7 +125,7 @@ Role::RunAlone - prevent multiple instances of a script from running
 
 =head1 VERSION
 
-Version v0.0.0_04
+Version v0.1.0
 
 =head1 SYNOPSIS
   

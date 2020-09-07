@@ -1,6 +1,9 @@
 Revision history for Role-RunAlone
 
 Version     Timestamp
+v0.1.0      2020-09-06 23:19:00 PDT
+            Promoted v0.0.0_04.
+
 v0.0.0_04   2020-09-06 23:09:00 PDT
             Minor tweak to README.
             Added note to the description that locking the DATA section only
